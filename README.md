@@ -49,13 +49,17 @@ The code for this step is contained in the first code cell of the IPython notebo
     
 For ChessboardPoints() function above, I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
 
+And for corners drawing, using `cv2.drawChessboardCorners()`function can directly obtained results as follows:
+
+<img src="./output_images/draw_corners.png" width="400px">
+
     def cal_undistort(img, objpoints, imgpoints):
         img_size = (img.shape[1], img.shape[0]) 
         ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, img_size, None, None)
         dst = cv2.undistort(img, mtx, dist, None, mtx)
         return dst
     
-Then I used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the test image using the `cv2.undistort()` function and obtained this result: 
+Then I used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the camera_cal and test image using the `cv2.undistort()` function and obtained this result: 
 
 <img src="./output_images/undistorted_output.png" width="400px">
 ![alt text][image1]
@@ -63,6 +67,8 @@ Then I used the output `objpoints` and `imgpoints` to compute the camera calibra
 ### Pipeline (single images)
 
 #### 1. Provide an example of a distortion-corrected image.
+
+Using chessboard image, we firstly obtained two main parameters which were objpoints and imgpoints. So we 
 
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
 ![alt text][image2]
