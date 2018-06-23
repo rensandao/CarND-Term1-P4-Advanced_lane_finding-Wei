@@ -61,21 +61,69 @@ And for corners drawing, using `cv2.drawChessboardCorners()`function can directl
     
 Then I used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the camera_cal and test image using the `cv2.undistort()` function and obtained this result: 
 
-<img src="./output_images/undistorted_output.png" width="400px">
+<img src="./output_images/undistorted1.png" width="400px">
 ![alt text][image1]
+
 
 ### Pipeline (single images)
 
 #### 1. Provide an example of a distortion-corrected image.
 
-After obtaining objpoints and imgpoints based on different referenced direction., we can apply points got from similar distorted direction on test images. Here is result:
+After obtaining objpoints and imgpoints based on different referenced direction, we can using these points to carlibrate distorted images. Here is result:
 
-To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
-![alt text][image2]
+<img src="./output_images/undistorted1.png" width="400px">
 
-It can hardly see the change unless you watch the hood of car below the image carefully. 
+In this camera case, it can hardly see the change unless you watch the hood of car below the image carefully. 
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
+
+I tried several methods to check which one or combined made good effort. Firstly, I used Sobel algorithm, took an absolute and applied a
+threshold.
+
+    def abs_sobel_thresh(img, orient,sobel_kernel,thresh):
+        gray = cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)
+        if orient == 'x':
+            sobel = cv2.Sobel(gray,cv2.CV_64F,1,0,ksize=sobel_kernel)
+            abs_sobel = np.absolute(sobel)
+        elif orient == 'y':
+            sobel = cv2.Sobel(gray,cv2.CV_64F,0,1,ksize=sobel_kernel)
+            abs_sobel = np.absolute(sobel)
+        else:
+            print('input error: orient should be x or y')
+        scaled_sobel = np.uint8(255*abs_sobel/np.max(abs_sobel))
+        sxbinary = np.zeros_like(scaled_sobel)
+        sxbinary[(scaled_sobel >= thresh[0]) & (scaled_sobel <= thresh[1])] = 1
+        return sxbinary
+
+    def mag_thresh(img, sobel_kernel, mag_thresh):
+        gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+        sobelx = cv2.Sobel(gray, cv2.CV_64F,1,0, ksize=sobel_kernel)
+        sobely = cv2.Sobel(gray, cv2.CV_64F,0,1, ksize=sobel_kernel)
+        abs_sobelxy = np.sqrt(sobelx **2 + sobely **2)
+        scaled_sobel = np.uint8(255 * abs_sobelxy/np.max(abs_sobelxy))
+        sxybinary = np.zeros_like(scaled_sobel)
+        sxybinary[(scaled_sobel >= mag_thresh[0]) & (scaled_sobel <= mag_thresh[1])] = 1
+        return sxybinary
+        
+     def dir_threshold(img, sobel_kernel, thresh):
+        gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+        sobelx = cv2.Sobel(gray, cv2.CV_64F,1,0,ksize=sobel_kernel)
+        sobely = cv2.Sobel(gray, cv2.CV_64F,0,1,ksize=sobel_kernel)
+        sobelxy = np.sqrt(sobelx ** 2 +sobely **2)
+        abs_sobelx = np.absolute(sobelx)
+        abs_sobely = np.absolute(sobely)
+        grad = np.arctan2(abs_sobely, abs_sobelx)
+        binary_output = np.zeros_like(grad)
+        return binary_output
+
+Here is just one result:
+
+<img src="./output_images/undistorted1.png" width="400px">
+
+It came to that applying sobel x  emphasized edges closer to vertical, while applying sobel y emphasizes edges closer to horizontal. 
+
+
+
 
 I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
 
