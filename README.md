@@ -36,6 +36,7 @@ The goals / steps of this project are the following:
 The code for this step is contained in the first code cell of the IPython notebook located in "./ALL.ipynb"  
 
 def ChessboardPoints(img,grid=(9,6)):  
+
     objp = np.zeros((grid[0]*grid[1],3), np.float32)
     objp[:,:2] = np.mgrid[0:grid[0], 0:grid[1]].T.reshape(-1,2)
     objpoints = [] 
