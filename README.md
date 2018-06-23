@@ -35,18 +35,17 @@ The goals / steps of this project are the following:
 
 The code for this step is contained in the first code cell of the IPython notebook located in "./ALL.ipynb"  
 
-def ChessboardPoints(img,grid=(9,6)):  
-
-    objp = np.zeros((grid[0]*grid[1],3), np.float32)
-    objp[:,:2] = np.mgrid[0:grid[0], 0:grid[1]].T.reshape(-1,2)
-    objpoints = [] 
-    imgpoints = [] 
-    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-    ret, corners = cv2.findChessboardCorners(gray, (9,6), None)
-    if ret == True:
-        objpoints.append(objp)
-        imgpoints.append(corners)
-    return objpoints,imgpoints
+    def ChessboardPoints(img,grid=(9,6)):  
+        objp = np.zeros((grid[0]*grid[1],3), np.float32)
+        objp[:,:2] = np.mgrid[0:grid[0], 0:grid[1]].T.reshape(-1,2)
+        objpoints = [] 
+        imgpoints = [] 
+        gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+        ret, corners = cv2.findChessboardCorners(gray, (9,6), None)
+        if ret == True:
+            objpoints.append(objp)
+            imgpoints.append(corners)
+        return objpoints,imgpoints
     
 I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
 
