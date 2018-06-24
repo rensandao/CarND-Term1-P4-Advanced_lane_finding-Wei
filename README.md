@@ -244,7 +244,7 @@ Then the offset between the vehicle and the center can be calculated by:
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
-I implemented this step in function `draw_lane_area` and `process_image`in the Jupyter notebook. Here is an example of my result on a test image:
+I implemented this step in function `draw_lane_area()` and `process_image()`in the Jupyter notebook. Here is an example of my result on a test image:
 
 <img src="./output_images/all_warped_images.png" width="400px">
 
