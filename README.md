@@ -149,7 +149,7 @@ The right figure below showes an output of combination:
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for my perspective transform includes a function called `warped()`, which mainly used `cv2.warpPerspective()`.  The `warped()` function takes as inputs an image (`img`), which has been undistorted and combined with color and gradient threshold. And three parameters including M, source (`src`) and destination (`dst`) points.  I chose directly to set the source and destination points by hard trial. The final is as below:
+The code for my perspective transform includes a function called `warped()`, which mainly used `cv2.warpPerspective()`.  The `warped()` function takes as inputs an image (`img`), which has been undistorted and combined with color and gradient threshold. And three parameters including M, source (`src`) and destination (`dst`) points.  I chose directly to set the source and destination points by hard trial. The final result is in `M_Minv()` as below:
 
     def M_Minv():
         src = np.float32([[(180,719),(595,450),(685,450),(1120,719)]])
@@ -162,32 +162,36 @@ The code for my perspective transform includes a function called `warped()`, whi
         img_shape = (img.shape[1],img.shape[0])
         warped = cv2.warpPerspective(img, M, img_shape, flags=cv2.INTER_LINEAR) 
         return warped
-    
-```python
-src = np.float32(
-    [[(img_size[0] / 2) - 55, img_size[1] / 2 + 100],
-    [((img_size[0] / 6) - 10), img_size[1]],
-    [(img_size[0] * 5 / 6) + 60, img_size[1]],
-    [(img_size[0] / 2 + 55), img_size[1] / 2 + 100]])
-dst = np.float32(
-    [[(img_size[0] / 4), 0],
-    [(img_size[0] / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), 0]])
-```
-
-This resulted in the following source and destination points:
-
-| Source        | Destination   | 
-|:-------------:|:-------------:| 
-| 585, 460      | 320, 0        | 
-| 203, 720      | 320, 720      |
-| 1127, 720     | 960, 720      |
-| 695, 460      | 960, 0        |
 
 I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
 
-![alt text][image4]
+<img src="./output_images/undistorted1.png" width="400px">
+
+I construct a pipeline to combine these steps for convenient call.
+
+```python
+def pipeline(img):  
+    # Distortion correction
+    undist = cal_undistort(img,objpoints,imgpoints)
+    # Get M/Minv
+    M,Minv = M_Minv()
+    # Gradient and color threshold
+    gradx = abs_sobel_thresh(undist, orient='x',sobel_kernel=3,thresh=(50,150))
+    grady = abs_sobel_thresh(undist, orient='y', sobel_kernel=3, thresh=(100, 150))
+    #mag_binary = mag_thresh(undist, sobel_kernel=3, mag_thresh=(50, 120))
+    dir_binary = dir_threshold(undist, sobel_kernel=3, thresh=(0.6, 1.4)) 
+    s_binary = hls_select(undist, thresh=(175, 255))
+    #combine gradx and hls thresholds
+    combined = np.zeros_like(dir_binary)    
+    combined[((gradx==1)|(s_binary==1))] = 1
+    #combined[((gradx==1)|(grady==1)) & ((dir_binary == 1))|(s_binary==1)] = 1
+    #Perspective Transform
+    warped = cv2.warpPerspective(combined, M, (combined.shape[1],combined.shape[0]), flags=cv2.INTER_LINEAR)
+    return warped, Minv
+```
+Here is the final result: 
+
+<img src="./output_images/undistorted1.png" width="400px">
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
