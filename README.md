@@ -1,5 +1,7 @@
 ## Advanced Lane Finding Project
 
+<img src="./output_images/output.gif?raw=true" width="400px"> 
+
 ---
 
 The goals / steps of this project are the following:
@@ -13,15 +15,6 @@ The goals / steps of this project are the following:
 * Warp the detected lane boundaries back onto the original image.
 * Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
 
-[//]: # (Image References)
-
-[image1]: ./output_images/undistorted_output.png "Undistorted"
-[image2]: ./test_images/test1.jpg "Road Transformed"
-[image3]: ./examples/binary_combo_example.jpg "Binary Example"
-[image4]: ./examples/warped_straight_lines.jpg "Warp Example"
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
-[image6]: ./examples/example_output.jpg "Output"
-[video1]: ./project_video.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 
@@ -53,7 +46,7 @@ For ChessboardPoints() function above, I start by preparing "object points", whi
 
 And for corners drawing, using `cv2.drawChessboardCorners()`function can directly obtained results. Here are results from different angles:
 
-<img src="./output_images/chessboard.png" width="400px">
+<img src="./output_images/chessboard.png" width="600px">
 
 ```python
 def cal_undistort(img, objpoints, imgpoints):
@@ -65,7 +58,7 @@ def cal_undistort(img, objpoints, imgpoints):
 
 Then I used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the camera_cal and test image using the `cv2.undistort()` function and obtained this result: 
 
-<img src="./output_images/undistorted1.png" width="400px">
+<img src="./output_images/undistorted1.png" width="600px">
 
 
 ### Pipeline (single images)
@@ -74,7 +67,7 @@ Then I used the output `objpoints` and `imgpoints` to compute the camera calibra
 
 After obtaining objpoints and imgpoints based on different referenced direction, we can using these points to carlibrate distorted images. Here is result:
 
-<img src="./output_images/undistorted2.png" width="400px">
+<img src="./output_images/undistorted2.png" width="600px">
 
 In this camera case, it can hardly see the change unless you watch the hood of car below the image carefully. 
 
@@ -123,7 +116,7 @@ def mag_thresh(img, sobel_kernel, mag_thresh):
 
 Here is just one result using sobel x binary:
 
-<img src="./output_images/gradx.png" width="400px">
+<img src="./output_images/gradx.png" width="600px">
 
 It showed that 'abs_sobel_thresh' with sobel x did a good job, the lane line  can mostly be displayed. It proved that applying sobel x  emphasized edges closer to vertical, while applying sobel y emphasizes edges closer to horizontal. But some images from NO.3/4/5 row above showed sobel x(and other combinations) did bad, especially when it came to positions with high brightness. 
 
@@ -151,7 +144,7 @@ def hls_select(img, channel='s',thresh=(175,255)):
 
 The right figure below showes an output of combination:
 
-<img src="./output_images/HLS.png" width="400px">  <img src="./output_images/color_grad_threshold.png" width="400px">
+<img src="./output_images/HLS.png" width="400px">    <img src="./output_images/color_grad_threshold.png" width="400px">
 
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
@@ -174,7 +167,7 @@ def warped(img):
 
 I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
 
-<img src="./output_images/warped_line.png" width="400px">
+<img src="./output_images/warped_line.png" width="600px">
 
 I construct a pipeline to combine these steps for convenient call.
 
@@ -200,7 +193,7 @@ def pipeline(img):
 ```
 Here is the final result: 
 
-<img src="./output_images/all_warped_images.png" width="400px">
+<img src="./output_images/all_warped_images.png" width="600px">
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
