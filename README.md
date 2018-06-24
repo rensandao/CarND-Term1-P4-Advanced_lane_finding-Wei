@@ -63,7 +63,7 @@ Then I used the output `objpoints` and `imgpoints` to compute the camera calibra
 
 #### 1. Provide an example of a distortion-corrected image.
 
-After obtaining objpoints and imgpoints based on different referenced direction, we can using these points to carlibrate distorted images. Here is result:
+After obtaining objpoints and imgpoints based on different referenced direction, we can use these points to carlibrate distorted images. Here is a result:
 
 <img src="./output_images/undistorted2.png" width="600px">
 
@@ -71,7 +71,7 @@ In this camera case, it can hardly see the change unless you watch the hood of c
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
-I tried several methods to check which one or combined made good effort. Firstly, I used Sobel algorithm, took an absolute and applied a
+I tried several methods to check which one or combined made good effect. Firstly, I used Sobel algorithm, taking an absolute and applying a
 threshold.
 
 ```python
@@ -116,9 +116,9 @@ Here is just one result using sobel x binary:
 
 <img src="./output_images/gradx.png" width="600px">
 
-It showed that 'abs_sobel_thresh' with sobel x did a good job, the lane line  can mostly be displayed. It proved that applying sobel x  emphasized edges closer to vertical, while applying sobel y emphasizes edges closer to horizontal. But some images from NO.3/4/5 row above showed sobel x(and other combinations) did bad, especially when it came to positions with high brightness. 
+It shows that 'abs_sobel_thresh' with sobel x did a good job, the lane line can mostly be displayed. It proves that applying sobel x  emphasized edges closer to vertical, while applying sobel y emphasizes edges closer to horizontal. But some images from NO.3/4/5 row above showed sobel x(and other combinations) did bad, especially when it came to positions with high brightness. 
 
-So we need to combine gradient threshold with color threhold. Color threshold(HLS) showed its effect in detecting lines in groud with high brightness.Among three channels(H,L,S), S channel did the best. 
+So I combined gradient threshold with color threhold. Color threshold(HLS) shows its effect in detecting lines in groud with high brightness.Among three channels(H,L,S), S channel did the best. 
 
 ```python
 def hls_select(img, channel='s',thresh=(175,255)):
@@ -140,7 +140,7 @@ def hls_select(img, channel='s',thresh=(175,255)):
     return binary_output
 ```
 
-The right figure below showes an output of combination:
+The right figure below shows an output of combination:
 
 <img src="./output_images/HLS.png" width="400px">    <img src="./output_images/color_grad_threshold.png" width="400px">
 
