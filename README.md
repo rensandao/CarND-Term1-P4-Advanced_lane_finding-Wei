@@ -232,10 +232,13 @@ def curvature(width, ploty, left_fitx, right_fitx):
     return radius_of_curvature, vehicle_offset
 ```
 To calculate the radius of curvature of lane, we basically use math conducted formula which can refered upon [the material here](http://www.intmath.com/applications-differentiation/8-radius-curvature.php). The formula can be seen above:
+
 `left_curverad =  ((1 + (2*left_fit_cr[0] *y_eval*ym_per_pix + left_fit_cr[1])**2) **1.5)/np.absolute(2*left_fit_cr[0])`
 
 Then the offset between the vehicle and the center can be calculated by:
+
 `lane_center = (left_fitx[719] + right_fitx[719]) / 2`
+
 ` vehicle_offset = (lane_center-car_pos)*xm_per_pix`
 
 
