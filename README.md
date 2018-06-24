@@ -260,7 +260,7 @@ parameters and combination, or add more threshold such as HSV and Lab which I ha
 I have another trouble in drawing windows and pixels as is showed above. The window just didn't show or showed unperfectly. And so did pixels. Though it didn't affect the final output, I need to solve the trouble further.
 
 The outputs of challenged and harder challenged videos applying pipeline, show many problems including failing detecting lane or drawing 
-safe lane area. It shows that many more complex trouble in world case need to be considered and to sovled for further.
+safe lane area. So for me, many more complex trouble in world case need to be considered and to solved for further.
 
 ---
 
