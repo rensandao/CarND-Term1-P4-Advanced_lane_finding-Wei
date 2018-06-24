@@ -1,7 +1,5 @@
 ## Advanced Lane Finding Project
-
 <img src="./output_images/output.gif?raw=true" width="400px"> 
-
 ---
 
 The goals / steps of this project are the following:
@@ -46,7 +44,7 @@ For ChessboardPoints() function above, I start by preparing "object points", whi
 
 And for corners drawing, using `cv2.drawChessboardCorners()`function can directly obtained results. Here are results from different angles:
 
-<img src="./output_images/chessboard.png" width="600px">
+<img src="./output_images/chessboard.png" width="700px">
 
 ```python
 def cal_undistort(img, objpoints, imgpoints):
@@ -193,7 +191,7 @@ def pipeline(img):
 ```
 Here is the final result: 
 
-<img src="./output_images/all_warped_images.png" width="600px">
+<img src="./output_images/all_warped_images.png" width="400px">
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
@@ -264,5 +262,6 @@ I have another trouble in drawing windows and pixels as is showed above. The win
 The outputs of challenged and harder challenged videos applying pipeline, show many problems including failing detecting lane or drawing 
 safe lane area. It shows that many more complex trouble in world case need to be considered and to sovled for further.
 
-### Adjustment log
+---
 
+### Adjustment log
