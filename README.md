@@ -53,7 +53,7 @@ For ChessboardPoints() function above, I start by preparing "object points", whi
 
 And for corners drawing, using `cv2.drawChessboardCorners()`function can directly obtained results. Here are results from different angles:
 
-<img src="./output_images/draw_corners.png" width="400px">
+<img src="./output_images/chessboard.png" width="400px">
 
 ```python
 def cal_undistort(img, objpoints, imgpoints):
@@ -66,7 +66,6 @@ def cal_undistort(img, objpoints, imgpoints):
 Then I used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the camera_cal and test image using the `cv2.undistort()` function and obtained this result: 
 
 <img src="./output_images/undistorted1.png" width="400px">
-![alt text][image1]
 
 
 ### Pipeline (single images)
@@ -75,7 +74,7 @@ Then I used the output `objpoints` and `imgpoints` to compute the camera calibra
 
 After obtaining objpoints and imgpoints based on different referenced direction, we can using these points to carlibrate distorted images. Here is result:
 
-<img src="./output_images/undistorted1.png" width="400px">
+<img src="./output_images/undistorted2.png" width="400px">
 
 In this camera case, it can hardly see the change unless you watch the hood of car below the image carefully. 
 
@@ -124,7 +123,7 @@ def mag_thresh(img, sobel_kernel, mag_thresh):
 
 Here is just one result using sobel x binary:
 
-<img src="./output_images/undistorted1.png" width="400px">
+<img src="./output_images/gradx.png" width="400px">
 
 It showed that 'abs_sobel_thresh' with sobel x did a good job, the lane line  can mostly be displayed. It proved that applying sobel x  emphasized edges closer to vertical, while applying sobel y emphasizes edges closer to horizontal. But some images from NO.3/4/5 row above showed sobel x(and other combinations) did bad, especially when it came to positions with high brightness. 
 
@@ -152,7 +151,7 @@ def hls_select(img, channel='s',thresh=(175,255)):
 
 The right figure below showes an output of combination:
 
-<img src="./output_images/undistorted1.png" width="400px">  <img src="./output_images/undistorted1.png" width="400px">
+<img src="./output_images/HLS.png" width="400px">  <img src="./output_images/color_grad_threshold.png" width="400px">
 
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
@@ -175,7 +174,7 @@ def warped(img):
 
 I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
 
-<img src="./output_images/undistorted1.png" width="400px">
+<img src="./output_images/warped_line.png" width="400px">
 
 I construct a pipeline to combine these steps for convenient call.
 
@@ -207,11 +206,11 @@ Here is the final result:
 
 Function`sliding_window_polyfit` (Not posted for too many code, can be find in jupyter notebook) provides steps to identify lane line pixels and fit with a ploynomial. Firstly, take a histogram of the bottom half of the warped image and find the peak of the left and right halves of the histogram. Based on the starting point for the left and right lines, with a certain number of sliding windows, identify the x and y positions of all nonzero pixels in the image and extract those left and right line pixels positions. Finally, fit a second order ploynomial to each with `np.polyfit()`. Here is an example:
 
-<img src="./output_images/all_warped_images.png" width="400px">
+<img src="./output_images/slide_window_polyfit.png" width="400px">
 
 #### Find the peak of the left and right halves of the histogram
 
-<img src="./output_images/all_warped_images.png" width="400px">
+<img src="./output_images/histogram.png" width="400px">
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
@@ -246,7 +245,7 @@ Then the offset between the vehicle and the center can be calculated by:
 
 I implemented this step in function `draw_lane_area()` and `process_image()`in the Jupyter notebook. Here is an example of my result on a test image:
 
-<img src="./output_images/all_warped_images.png" width="400px">
+<img src="./output_images/Final.png" width="400px">
 
 ---
 
