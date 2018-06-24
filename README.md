@@ -264,11 +264,13 @@ Here's a [link to my video result](./project_video.mp4)
 
 Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
 
-1. 颜色通道与梯度通道的调参数问题
-2. 画框问题，图片像素点不显示？画线却ok
-3. 鲁棒性（包括加上更多的图像处理 HSV、lab）
-4. 高级视频中遇到的问题（路面，阴影，车道线不准等）
+The first trouble was to handle with gradient threshold, different threshold methods have different effects. To achieve better effects, combination can help, but it need a lot of trial and experience. Sometimes the result may not seem better. In this case, I finally choose the combination of gradx and s color channel threshold without `mag_thresh` and `dir_thresh`. So I guess I need spend more time to adjust 
+parameters and combination, or add more threshold such as HSV and Lab which I haven't used in this case.
 
+I have another trouble in drawing windows and pixels as is showed above. The window just didn't show or showed unperfectly. And so did pixels. Though it didn't affect the final output, I need to solve the trouble further.
 
+The outputs of challenged and harder challenged videos applying pipeline, show many problems including failing detecting lane or drawing 
+safe lane area. It shows that many more complex trouble in world case need to be considered and to sovled for further.
 
+### Adjustment log
 
