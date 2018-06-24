@@ -94,7 +94,7 @@ threshold.
         sxbinary = np.zeros_like(scaled_sobel)
         sxbinary[(scaled_sobel >= thresh[0]) & (scaled_sobel <= thresh[1])] = 1
         return sxbinary
-
+   
     def mag_thresh(img, sobel_kernel, mag_thresh):
         gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
         sobelx = cv2.Sobel(gray, cv2.CV_64F,1,0, ksize=sobel_kernel)
@@ -104,7 +104,7 @@ threshold.
         sxybinary = np.zeros_like(scaled_sobel)
         sxybinary[(scaled_sobel >= mag_thresh[0]) & (scaled_sobel <= mag_thresh[1])] = 1
         return sxybinary
-        
+             
      def dir_threshold(img, sobel_kernel, thresh):
         gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
         sobelx = cv2.Sobel(gray, cv2.CV_64F,1,0,ksize=sobel_kernel)
@@ -116,18 +116,36 @@ threshold.
         binary_output = np.zeros_like(grad)
         return binary_output
 
-Here is just one result:
+Here is just one result using sobel x binary:
 
 <img src="./output_images/undistorted1.png" width="400px">
 
-It came to that applying sobel x  emphasized edges closer to vertical, while applying sobel y emphasizes edges closer to horizontal. 
+It showed that 'abs_sobel_thresh' with sobel x did a good job, the lane line  can mostly be displayed. It proved that applying sobel x  emphasized edges closer to vertical, while applying sobel y emphasizes edges closer to horizontal. But some images from NO.3/4/5 row above showed sobel x(and other combinations) did bad, especially when it came to positions with high brightness. 
 
+So we need to combine gradient threshold with color threhold. Color threshold(HLS) showed its effect in detecting lines in groud with high brightness.Among three channels(H,L,S), S channel did the best. 
 
+    def hls_select(img, channel='s',thresh=(175,255)):
+        hls = cv2.cvtColor(img, cv2.COLOR_RGB2HLS)
+        h_channel = hls[:,:,0]
+        l_channel = hls[:,:,1]
+        s_channel = hls[:,:,2]
+        if channel =='h':
+            binary_output = np.zeros_like(h_channel)
+            binary_output[(h_channel >= thresh[0]) & (h_channel <= thresh[1])] = 1
+        elif channel=='l':
+            binary_output = np.zeros_like(l_channel)
+            binary_output[(l_channel >= thresh[0]) & (l_channel <= thresh[1])] = 1
+        elif channel =='s':
+            binary_output = np.zeros_like(s_channel)
+            binary_output[(s_channel >= thresh[0]) & (s_channel <= thresh[1])] = 1   
+        else:
+            print("channel should be h,l or s.")
+        return binary_output
 
+The right figure below showes an output of combination:
 
-I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
+<img src="./output_images/undistorted1.png" width="400px">  <img src="./output_images/undistorted1.png" width="400px">
 
-![alt text][image3]
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
