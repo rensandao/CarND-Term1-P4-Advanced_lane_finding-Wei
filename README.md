@@ -1,7 +1,7 @@
 ## Advanced Lane Finding Project
 <img src="./output_images/output.gif?raw=true" width="400px"> 
----
 
+---
 The goals / steps of this project are the following:
 
 * Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
@@ -24,7 +24,7 @@ The goals / steps of this project are the following:
 
 #### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
 
-The code for this step is contained in the first code cell of the IPython notebook located in "./ALL.ipynb"  
+The code for this step is contained in the first step of the IPython notebook located in "./project.ipynb"  
 
 ```python
 def ChessboardPoints(img,grid=(9,6)):  
@@ -40,7 +40,7 @@ def ChessboardPoints(img,grid=(9,6)):
     return objpoints,imgpoints
 ```    
 
-For ChessboardPoints() function above, I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
+For ChessboardPoints() function above, I started by preparing "object points", which would be the (x, y, z) coordinates of the chessboard corners in the world. Here I was assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` would be appended with a copy of it every time I successfully detected all chessboard corners in test images.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
 
 And for corners drawing, using `cv2.drawChessboardCorners()`function can directly obtained results. Here are results from different angles:
 
@@ -147,7 +147,7 @@ The right figure below showes an output of combination:
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for my perspective transform includes a function called `warped()`, which mainly used `cv2.warpPerspective()`.  The `warped()` function takes as inputs an image (`img`), which has been undistorted and combined with color and gradient threshold. And three parameters including M, source (`src`) and destination (`dst`) points.  I chose directly to set the source and destination points by hard trial. The final result is in `M_Minv()` as below:
+The code for my perspective transform includes a function called `warped()`, which mainly uses `cv2.warpPerspective()`.  The `warped()` function takes as inputs an image (`img`), which has been undistorted and combined with color and gradient threshold. And three parameters including M, source (`src`) and destination (`dst`) points.  I chose directly to set the source and destination points by hard trial. The final result is in `M_Minv()` as below:
 
 ```python
 def M_Minv():
@@ -167,7 +167,7 @@ I verified that my perspective transform was working as expected by drawing the 
 
 <img src="./output_images/warped_line.png" width="600px">
 
-I construct a pipeline to combine these steps for convenient call.
+I constructed a pipeline to combine these steps for convenient calling.
 
 ```python
 def pipeline(img):  
@@ -199,7 +199,7 @@ Function`sliding_window_polyfit` (Not posted for too many code, can be find in j
 
 <img src="./output_images/slide_window_polyfit.png" width="400px">
 
-#### Find the peak of the left and right halves of the histogram
+Find the peak of the left and right halves of the histogram:
 
 <img src="./output_images/histogram.png" width="400px">
 
