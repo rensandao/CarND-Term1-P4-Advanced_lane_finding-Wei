@@ -209,7 +209,7 @@ Function`sliding_window_polyfit` (Not posted for too many code, can be find in j
 
 <img src="./output_images/all_warped_images.png" width="400px">
 
-# Find the peak of the left and right halves of the histogram
+#### Find the peak of the left and right halves of the histogram
 
 <img src="./output_images/all_warped_images.png" width="400px">
 
